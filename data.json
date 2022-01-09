@@ -1,0 +1,12 @@
+{   "side":"10",
+    "step":"1",
+    "square_color":"#0000FF",
+    "border_color":"#008000",
+    "border_width":"5",
+    "background":"assets\/background.png",
+    "messagePlayButton":"Show animation field",
+    "messageCloseButton":"Close animation field",
+    "messageStopButton":"Stop animation",
+    "messageReloadButton":"Reload animation",
+    "messageStartButton":"Start animation"
+}

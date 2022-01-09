@@ -1,0 +1,72 @@
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.3-c007 1.136881, 2010/06/10-18:11:35">
+ <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about=""
+   xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"
+   xmlns:exif="http://ns.adobe.com/exif/1.0/"
+   crs:HasSettings="True"
+   crs:AutoBrightness = "false"
+   crs:AutoContrast = "false"
+   crs:AutoShadows = "false"
+   crs:Brightness = "50"
+   crs:Clarity = "50"
+   crs:Contrast = "25"
+   crs:ConvertToGrayscale = "false"
+   crs:EnableColorAdjustments = "true"
+   crs:EnableEffects = "true"
+   crs:HueAdjustmentAqua = "0"
+   crs:HueAdjustmentBlue = "0"
+   crs:HueAdjustmentGreen = "0"
+   crs:HueAdjustmentMagenta = "0"
+   crs:HueAdjustmentOrange = "0"
+   crs:HueAdjustmentPurple = "0"
+   crs:HueAdjustmentRed = "0"
+   crs:HueAdjustmentYellow = "0"
+   crs:LuminanceAdjustmentAqua = "0"
+   crs:LuminanceAdjustmentBlue = "0"
+   crs:LuminanceAdjustmentGreen = "0"
+   crs:LuminanceAdjustmentMagenta = "0"
+   crs:LuminanceAdjustmentOrange = "0"
+   crs:LuminanceAdjustmentPurple = "0"
+   crs:LuminanceAdjustmentRed = "0"
+   crs:LuminanceAdjustmentYellow = "0"
+   crs:ParametricDarks = "-9"
+   crs:ParametricHighlightSplit = "75"
+   crs:ParametricHighlights = "0"
+   crs:ParametricLights = "6"
+   crs:ParametricMidtoneSplit = "50"
+   crs:ParametricShadowSplit = "25"
+   crs:ParametricShadows = "0"
+   crs:PostCropVignetteAmount = "-34"
+   crs:PostCropVignetteFeather = "61"
+   crs:PostCropVignetteHighlightContrast = "0"
+   crs:PostCropVignetteMidpoint = "52"
+   crs:PostCropVignetteRoundness = "-52"
+   crs:PostCropVignetteStyle = "1"
+   crs:Saturation = "-5"
+   crs:SaturationAdjustmentAqua = "-70"
+   crs:SaturationAdjustmentBlue = "-66"
+   crs:SaturationAdjustmentGreen = "-64"
+   crs:SaturationAdjustmentMagenta = "-66"
+   crs:SaturationAdjustmentOrange = "-47"
+   crs:SaturationAdjustmentPurple = "-62"
+   crs:SaturationAdjustmentRed = "-70"
+   crs:SaturationAdjustmentYellow = "-67"
+   crs:Shadows = "6"
+   crs:Temperature = "5650"
+   crs:Tint = "3"
+   crs:ToneCurveName = "Medium Contrast"
+   crs:Vibrance = "-5"
+   crs:WhiteBalance = "Custom">
+   <crs:ToneCurve>
+    <rdf:Seq>
+    <rdf:li>0,0</rdf:li>
+    <rdf:li>32,22</rdf:li>
+    <rdf:li>64,56</rdf:li>
+    <rdf:li>128,128</rdf:li>
+    <rdf:li>192,196</rdf:li>
+    <rdf:li>255,255</rdf:li>
+    </rdf:Seq>
+   </crs:ToneCurve>
+  </rdf:Description>
+ </rdf:RDF>
+</x:xmpmeta>

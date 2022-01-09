@@ -1,0 +1,196 @@
+body {
+    margin: 0px;
+    font-family: 'Times New Roman', Times, serif; /* Семейство шрифтов */
+    font-size: 18px; /* Размер основного шрифта в пунктах  */
+    background-color: #efefef;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 1px;
+}
+
+
+body, #main, .logo, .articlepart, .container, article, header, footer, footer div {
+    display: flex;
+    flex: 1;
+}
+
+.container {
+    flex-direction: column;
+}
+
+footer {
+    flex-direction: row-reverse;
+}
+    
+article, .logo, aside {
+    align-items: center;
+    flex-direction: column;
+}
+/* END */
+
+
+/* Alignings */
+header, footer {
+    align-items: center;
+    height: 20vh;
+}
+
+.push {
+    align-items: center;
+    text-align: right;
+}
+
+header .push {
+    margin-left: auto;
+}
+
+footer .push {
+    margin-right: auto;
+}
+
+article p {
+    align-self: baseline;
+}
+
+article div {
+    display: flex;
+    align-items: center;
+    margin-bottom: .5em;
+    flex-direction: column;
+}
+
+footer div {
+    flex-wrap: wrap;
+    text-align: left;
+    max-width: 10%;
+    padding: .5em;
+}
+
+nav, aside {
+    flex: 0 0 20vw;
+}
+
+header, footer, article, nav, aside, .logo {
+    padding: 1em;
+}
+/* END */
+
+
+/* Stylizing */
+.container {
+    border-left: 2px dashed black;
+}
+
+#main {
+    border-left: 4px groove black;
+    border-right: 4px groove black;
+}
+
+.articlepart {
+    border-top: 2px dashed black;
+}
+
+/* article div {
+    border: 2px dashed rgb(18, 112, 136);
+}
+*/
+
+aside {
+    border-left: 2px dashed black;
+}
+
+header, footer {
+    background-color: rgb(115, 219, 115);
+    border: 4px groove black;
+}
+
+nav, aside {
+    background: beige;
+}
+
+footer div {
+    background-color: aliceblue;
+}
+
+.push {
+    background-color: rgb(115, 219, 115);
+}
+/* END */
+
+
+/* Table settings */
+table {
+    border: 2px dashed rgb(18, 112, 136);
+}
+td { 
+    padding: 10px;
+}
+.name {
+background: #53f0bb;
+}
+.description {
+background: #f0f0f0;
+}
+.images {
+    width: 75px;
+    background: #ffffff;
+    color: #fff;
+}
+img.ph {
+    max-height: 50px;
+    max-width: 50px;
+}
+
+.sliderArticle {
+    max-width: 100%;
+    min-height: 90%;
+    bottom: 0%;
+    background-color: white;
+    padding: 10px;
+    text-align: left;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+
+
+  .class1_content{
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: right;
+    display: flex;
+    flex: 1 1 20%;
+    min-width:fit-content;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.class1{
+    background-color: aqua;
+    min-height: 40vh;
+    flex: 1 1 20%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width:fit-content;
+}
+
+.classX{
+    background-color: white;
+    text-align: left;
+    flex: 1 1 20%;
+    padding-left: 2px;
+    outline: 1px auto black;
+}
+
+.text1{
+    flex: 1 1 80%;
+}
+
+p {margin: 0px;
+}
+
+.title{margin: 0px; font-size: 20px; 
+}
