@@ -26,22 +26,21 @@ function readTextFile(file, callback) {
 }
 
 function getJson() {
-  readTextFile("data.json", function (text) {
-	console.log(text);
-    let parsedJson = JSON.parse(text);
-    side = parsedJson["side"];
-    rectColor = parsedJson["square_color"];
-    step = parsedJson["step"];
-    borderColor = parsedJson["border_color"];
-    borderWidth = parsedJson["border_width"];
-    texturePath = parsedJson["background"];
-    Play_message = parsedJson["messagePlayButton"];
-    Stop_message = parsedJson["messageStopButton"];
-    Start_message = parsedJson["messageStartButton"];
-    Close_message = parsedJson["messageCloseButton"];
-    Reload_message = parsedJson["messageReloadButton"];
-  });
-}
+	readTextFile("data.json", function (text) {
+	  let parsedJson = JSON.parse(text);
+	  side = parsedJson["side"];
+	  rectColor = parsedJson["square_color"];
+	  step = parsedJson["step"];
+	  borderColor = parsedJson["border_color"];
+	  borderWidth = parsedJson["border_width"];
+	  texturePath = parsedJson["background"];
+	  Play_message = parsedJson["messagePlayButton"];
+	  Stop_message = parsedJson["messageStopButton"];
+	  Start_message = parsedJson["messageStartButton"];
+	  Close_message = parsedJson["messageCloseButton"];
+	  Reload_message = parsedJson["messageReloadButton"];
+	});
+  }
 
 function getFormattedDate() {
   let d = new Date();
@@ -56,27 +55,29 @@ function getFormattedDate() {
     ":" +
     ("0" + d.getMinutes()).slice(-2) +
     ":" +
-    ("0" + d.getSeconds()).slice(-2) + 
-    ":" + d.getMilliseconds();
+    ("0" + d.getSeconds()).slice(-2) +
+    ":" +
+    d.getMilliseconds();
   return d;
 }
 
 function messagesManage(message) {
   localStorage.setItem(
-    "message" + (localStorage.length + 1),
+    "msg" + (localStorage.length + 1),
     getFormattedDate() + " " + message
   );
   document.getElementById("controls_messages").textContent = message;
 }
 
-function detectOutsideAnim() {
-  let rect = document.getElementById("rect");
-  let anim = document.getElementById("anim");
+function detectOutsideAnim(x, y) {
+  let width = canvas.width;
+  let height = canvas.height;
+  let sides = Number.parseInt(side);
   if (
-    rect.offsetLeft + rect.offsetWidth < 0 ||
-    rect.offsetLeft - rect.offsetWidth > anim.offsetWidth ||
-    rect.offsetTop + rect.offsetHeight < 0 ||
-    rect.offsetTop - rect.offsetHeight > anim.offsetHeight
+    x + sides < 0 ||
+    y - sides > height ||
+    x - sides > width ||
+    y + sides < 0
   ) {
     messagesManage(OutOfBorder_message);
     return true;
@@ -84,21 +85,28 @@ function detectOutsideAnim() {
   return false;
 }
 
-function detectCollision() {
-  let rect = document.getElementById("rect");
-  let anim = document.getElementById("anim");
+function detectCollision(x, y) {
+  let width = canvas.width;
+  let height = canvas.height;
+  let sides = Number.parseInt(side);
   if (
-    (rect.offsetLeft <= 0 && rect.offsetLeft + rect.offsetWidth >= 0) ||
-    (rect.offsetLeft >= anim.offsetWidth &&
-      rect.offsetLeft - rect.offsetWidth <= anim.offsetWidth) ||
-    (rect.offsetTop <= 0 && rect.offsetTop + rect.offsetHeight >= 0) ||
-    (rect.offsetTop >= anim.offsetHeight &&
-      rect.offsetTop - rect.offsetHeight <= anim.offsetHeight)
+    (x + sides >= 0 && x - sides <= 0) ||
+    (y - sides <= height && y + sides >= height) ||
+    (x - sides <= width && x + sides >= width) ||
+    (y + sides >= 0 && y - sides <= 0)
   ) {
     messagesManage(Collision_message);
     return true;
   }
   return false;
+}
+
+function drawRect(arcX, arcY, canvas) {
+  let ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  ctx.fillStyle = rectColor;
+  ctx.fillRect(arcX-side/2, arcY-side/2, side, side);
 }
 
 function play() {
@@ -115,17 +123,15 @@ function play() {
   work.style.height = "100%";
   work.style.position = "relative";
 
-  let anim = document.createElement("div");
-  anim.id = "anim";
-  anim.style.width = "calc(100% - 10px)";
-  anim.style.height = "calc(100% - 50px)";
-  anim.style.position = "absolute";
-  anim.style.bottom = "0px";
-  anim.style.borderColor = `${borderColor}`;
-  anim.style.borderWidth = `${borderWidth}px`;
-  anim.style.borderStyle = "solid";
-  anim.style.backgroundImage = `url(${texturePath})`;
-  anim.style.backgroundRepeat = "repeat";
+  let canvas = document.createElement("canvas");
+  canvas.id = "canvas";
+  canvas.style.position = "absolute";
+  canvas.style.bottom = "0";
+  canvas.style.borderColor = `${borderColor}`;
+  canvas.style.borderWidth = `${borderWidth}px`;
+  canvas.style.borderStyle = "solid";
+  canvas.style.backgroundImage = `url(${texturePath})`;
+  canvas.style.backgroundRepeat = "repeat";
 
   let controls = document.createElement("div");
   controls.id = "controls";
@@ -145,15 +151,6 @@ function play() {
   controls_messages.style.right = "3%";
   controls_messages.style.margin = "0";
 
-  let rect = document.createElement("div");
-  rect.id = "rect";
-  rect.style.width = `${side}px`;
-  rect.style.height = `${side}px`;
-  rect.style.backgroundColor = `${rectColor}`;
-  rect.style.position = "absolute";
-  rect.style.top = `calc(50% - ${side/2}px)`;
-  rect.style.left = `calc(50% - ${side/2}px)`;
-
   let Close_button = document.createElement("button");
   Close_button.id = "Close_button";
   Close_button.textContent = "Close";
@@ -168,14 +165,22 @@ function play() {
   controls_buttons.appendChild(Start_button);
   controls.appendChild(controls_buttons);
   controls.appendChild(controls_messages);
-  anim.appendChild(rect);
   work.appendChild(controls);
-  work.appendChild(anim);
+  work.appendChild(canvas);
 
   item1.appendChild(work);
 
+  canvas.width = work.offsetWidth - 10;
+  canvas.height = work.offsetHeight - 50;
+  drawRect(canvas.width / 2, canvas.height / 2, canvas);
+  x = canvas.width / 2;
+  y = canvas.height / 2;
+
   messagesManage(Play_message);
 }
+
+let x;
+let y;
 
 function startAnim() {
   messagesManage(Start_message);
@@ -190,31 +195,31 @@ function startAnim() {
   Stop_button.addEventListener("click", stopAnim);
   controls_buttons.appendChild(Stop_button);
 
-  let rect = document.getElementById("rect");
-  rect.style.top = `calc(50% - ${side/2}px)`;
-  rect.style.left = `calc(50% - ${side/2}px)`;
   let direction = "r";
   let currentStep = Number.parseInt(step);
-  let left = rect.offsetLeft;
-  let top =  rect.offsetTop;
-  function makeMove(direction, currentStep, step, left, top, rect) {
+  let canvas = document.getElementById("canvas");
+  drawRect(canvas.offsetWidth / 2, canvas.offsetHeight / 2, canvas);
+  x = canvas.width / 2;
+  y = canvas.height / 2;
+
+  function makeMove(direction, currentStep, step, canvas, x, y) {
     setTimeout(() => {
       switch (direction) {
-        case "l":
-          left -= currentStep;
-          rect.style.left = `${left}px`;
+        case "r":
+          x += currentStep;
+          drawRect(x, y, canvas);
           break;
         case "b":
-          top += currentStep;
-          rect.style.top = `${top}px`;
+          y += currentStep;
+          drawRect(x, y, canvas);
           break;
-        case "r":
-          left += currentStep;
-          rect.style.left = `${left}px`;
-          break;
+		    case "l":
+		      x -= currentStep;
+		      drawRect(x, y, canvas);
+		      break;
         case "t":
-          top -= currentStep;
-          rect.style.top = `${top}px`;
+          y -= currentStep;
+          drawRect(x, y, canvas);
           break;
       }
       switch (direction) {
@@ -231,7 +236,7 @@ function startAnim() {
           direction = "r";
       }
       currentStep += step;
-      if (detectCollision()) {
+      if (detectCollision(x, y)) {
         if (document.getElementById("Reload_button") == null) {
           let controls_buttons = document.getElementById("controls_buttons");
           let Stop_button = document.getElementById("Stop_button");
@@ -244,17 +249,18 @@ function startAnim() {
           controls_buttons.appendChild(Reload_button);
         }
       }
-      if (!detectOutsideAnim() && document.getElementById("Start_button") == null)
-        makeMove(direction, currentStep + step, step, left, top, rect);
+      if (
+        !detectOutsideAnim(x, y) &&
+        document.getElementById("Start_button") == null
+      )
+        makeMove(direction, currentStep + step, step, canvas, x, y);
     }, 250);
   }
-  makeMove(direction, currentStep, Number.parseInt(step), left, top, rect);
+  makeMove(direction, currentStep, Number.parseInt(step), canvas, x, y);
 }
 
 function reloadAnim() {
   messagesManage(Reload_message);
-
-  reloadPressed=true;
 
   let controls_buttons = document.getElementById("controls_buttons");
   let Reload_button = document.getElementById("Reload_button");
@@ -266,15 +272,12 @@ function reloadAnim() {
   Start_button.addEventListener("click", startAnim);
   controls_buttons.appendChild(Start_button);
 
-  let rect = document.getElementById("rect");
-  rect.style.top = `calc(50% - ${side/2}px)`;
-  rect.style.left = `calc(50% - ${side/2}px)`;
+  let canvas = document.getElementById("canvas");
+  drawRect(canvas.offsetWidth / 2, canvas.offsetHeight / 2, canvas);
 }
 
 function stopAnim() {
   messagesManage(Stop_message);
-
-  stopPressed=true;
 
   let controls_buttons = document.getElementById("controls_buttons");
   let Stop_button = document.getElementById("Stop_button");
@@ -288,7 +291,6 @@ function stopAnim() {
 }
 
 function closeAnim() {
-  reloadPressed=true;
   messagesManage(Close_message);
   let item1 = document.querySelector(".class1");
   let work = document.getElementById("work");
@@ -306,7 +308,7 @@ function closeAnim() {
   for (let i = 0; i < localStorage.length; i++) {
     let li = document.createElement("li");
     li.appendChild(
-      document.createTextNode(localStorage.getItem(`message${i + 1}`))
+      document.createTextNode(localStorage.getItem(`msg${i + 1}`))
     );
     allMessages.appendChild(li);
   }
@@ -316,4 +318,3 @@ function closeAnim() {
 }
 
 document.getElementById("playButton").addEventListener("click", play);
-
